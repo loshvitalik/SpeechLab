@@ -7,7 +7,7 @@ using Google.Cloud.Speech.V1;
 
 namespace WeatherLabServer
 {
-    class SpeechRecognition
+    class SpeechRecognizer
     {
         public static String Recognise(byte[] Speech)
         {

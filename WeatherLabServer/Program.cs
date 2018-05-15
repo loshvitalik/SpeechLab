@@ -40,7 +40,7 @@ namespace WeatherLabServer
 
             // speech recognition
 
-		    var result = SpeechRecognition.Recognise(Speech);
+		    var result = SpeechRecognizer.Recognise(Speech);
 			Console.WriteLine(result);
 		}
 
