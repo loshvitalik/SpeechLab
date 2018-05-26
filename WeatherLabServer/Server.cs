@@ -19,14 +19,19 @@ namespace WeatherLabServer
             {
                 var clientMessage = server.ReceiveMultipartMessage();
                 Console.WriteLine("Received a message at " + DateTime.Now.ToLongTimeString());
-                PrintFrames("Server reciving", clientMessage);
+                PrintFrames("Server receiving", clientMessage);
+				// раскомментить
+	            //var response = SpeechRecognizer.Recognize(clientMessage[1].ToByteArray());
                 var clientAddress = clientMessage[0];
                 var messageToClient = new NetMQMessage();
                 messageToClient.Append(clientAddress);
-                messageToClient.Append("Head: text");
-                messageToClient.Append("Some text");
+                messageToClient.Append("Text");
+				// раскомментить
+				//messageToClient.Append(response);
+				// закомментить 1 строку
+                messageToClient.Append("Meessage content");
                 server.SendMultipartMessage(messageToClient);
-                Console.WriteLine("Send a message at " + DateTime.Now.ToLongTimeString());
+                Console.WriteLine("Sent a message at " + DateTime.Now.ToLongTimeString());
                 Console.WriteLine();
             }
         }

@@ -1,27 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Google.Cloud.Speech.V1;
+﻿using Google.Cloud.Speech.V1;
 
 namespace WeatherLabServer
 {
-    class SpeechRecognizer
-    {
-        public static String Recognise(byte[] Speech)
-        {
-            var speech = SpeechClient.Create();
-            var response = speech.Recognize(new RecognitionConfig
-            {
-                Encoding = RecognitionConfig.Types.AudioEncoding.Linear16,
-                SampleRateHertz = 44100,
-                LanguageCode = "ru-RU"
-            }, RecognitionAudio.FromBytes(Speech));
-            string result = (response.Results.Count == 0)
-                ? "Error"
-                : response.Results[0].Alternatives[0].Transcript;
-            return result;
-        }
-    }
+	internal class SpeechRecognizer
+	{
+		public static string Recognize(byte[] speech)
+		{
+			var client = SpeechClient.Create();
+			var config = new RecognitionConfig
+			{
+				Encoding = RecognitionConfig.Types.AudioEncoding.Linear16,
+				SampleRateHertz = 44100,
+				LanguageCode = "ru-Ru"
+			};
+			var response = client.Recognize(config, RecognitionAudio.FromBytes(speech));
+			if (response.Results.Count != 0)
+				return "ru:" + response.Results[0].Alternatives[0].Transcript;
+			config.LanguageCode = "en";
+			response = client.Recognize(config, RecognitionAudio.FromBytes(speech));
+			if (response.Results.Count != 0)
+				return "en:" + response.Results[0].Alternatives[0].Transcript;
+			return "Error";
+		}
+	}
 }
