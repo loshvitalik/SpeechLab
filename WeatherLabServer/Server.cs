@@ -69,7 +69,7 @@ namespace WeatherLabServer
 		private NetMQMessage CreateResponse(NetMQMessage message, params string[] data)
 		{
 			foreach (var d in data)
-				message.Append(d);
+				message.Append(Encoding.UTF8.GetBytes(d));
 			return message;
 		}
 

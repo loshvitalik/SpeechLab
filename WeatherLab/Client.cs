@@ -13,6 +13,7 @@ namespace WeatherLab
 		{
 			client = new DealerSocket();
 			client.Connect(address);
+		   
 		}
 
 		public Tuple<string, string> Recognize(byte[] phrase)
