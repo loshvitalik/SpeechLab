@@ -11,13 +11,13 @@ namespace WeatherLabServer
 		private readonly Forecaster forecaster;
 		private readonly SpeechRecognizer recognizer;
 		private readonly RouterSocket server;
-		private readonly string[] stopWords = {"погода", "в"}; // можно и из файла при создании
+		private readonly string[] stopWords = {"погода", "в", "город", "городе"}; // можно и из файла при создании
 
 		public Server()
 		{
 			server = new RouterSocket("@tcp://127.0.0.1:2228");
 			recognizer = new SpeechRecognizer();
-			forecaster = new Forecaster("APIkey");
+			forecaster = new Forecaster("1b933923de5a5582bcf7788f67709a15");
 		}
 
 		public void Run()
