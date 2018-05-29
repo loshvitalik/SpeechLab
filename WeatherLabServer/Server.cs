@@ -53,14 +53,17 @@ namespace WeatherLabServer
 				return CreateResponse(response, "NoText");
 			if (!words.Contains("погода"))
 				return CreateResponse(response, "Text", phrase);
-			var id = 0;
+			var city = "";
 			foreach (var w in words.Where(w => !stopWords.Contains(w)))
 				if (forecaster.Cities.ContainsKey(w))
-					id = forecaster.Cities[w];
-			if (id == 0)
+				{
+					city = w;
+					break;
+				}
+			if (city == "")
 				return CreateResponse(response, "NoWeather", phrase);
 			return CreateResponse(response, "Weather", phrase,
-				forecaster.GetWeather(id));
+				forecaster.GetWeather(city));
 		}
 
 		private NetMQMessage CreateResponse(NetMQMessage message, params string[] data)

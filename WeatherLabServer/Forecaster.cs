@@ -13,10 +13,10 @@ namespace WeatherLabServer
 			// Cities заполняем из файла
 		}
 
-		public string GetWeather(int cityId)
+		public string GetWeather(string city)
 		{
 			// получаем json погоды, вытаскиваем температуру и отдаем красивую строку
-			return @"{""Город"":" + cityId + "}";
+			return @"{""ID города"":" + Cities[city] + "}";
 		}
 	}
 }
