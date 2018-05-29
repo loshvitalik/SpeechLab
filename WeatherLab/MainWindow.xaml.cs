@@ -13,7 +13,7 @@ namespace WeatherLab
         public MainWindow()
         {
             InitializeComponent();
-	        client = new Client("tcp://10.97.129.111:2228");
+	        client = new Client("tcp://127.0.0.1:2228");
         }
 
 	    private void StartRecording(object sender, MouseButtonEventArgs e)
@@ -27,9 +27,9 @@ namespace WeatherLab
 	    {
 			test.Content = "Запись завершена";
 			recorder.WaveSource.StopRecording();
-		    // раскомментить
-			//var response = client.Recognize(recorder.Stream.ToArray());
-			//test.Content = response;
-		}
+			var response = client.Recognize(recorder.Stream.ToArray());
+		    phrase.Content = "\" " + response.Item1 + " \"";
+		    text.Content = response.Item2;
+	    }
 	}
 }

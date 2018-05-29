@@ -4,23 +4,24 @@ namespace WeatherLabServer
 {
 	internal class SpeechRecognizer
 	{
-		public static string Recognize(byte[] speech)
+		private readonly SpeechClient client;
+		private readonly RecognitionConfig config;
+
+		public SpeechRecognizer()
 		{
-			var client = SpeechClient.Create();
-			var config = new RecognitionConfig
+			client = SpeechClient.Create();
+			config = new RecognitionConfig()
 			{
 				Encoding = RecognitionConfig.Types.AudioEncoding.Linear16,
 				SampleRateHertz = 44100,
 				LanguageCode = "ru-Ru"
 			};
+		}
+
+		public string Recognize(byte[] speech)
+		{
 			var response = client.Recognize(config, RecognitionAudio.FromBytes(speech));
-			if (response.Results.Count != 0)
-				return "ru:" + response.Results[0].Alternatives[0].Transcript;
-			config.LanguageCode = "en";
-			response = client.Recognize(config, RecognitionAudio.FromBytes(speech));
-			if (response.Results.Count != 0)
-				return "en:" + response.Results[0].Alternatives[0].Transcript;
-			return "Error";
+			return response.Results.Count != 0 ? response.Results[0].Alternatives[0].Transcript : "";
 		}
 	}
 }

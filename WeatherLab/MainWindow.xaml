@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Speech-to-Weather" Height="650" MinHeight="480" Width="1000" MinWidth="640" Background="#FFEFEFF4" WindowStyle="ThreeDBorderWindow">
+        Title="SpeechLab" Height="650" MinHeight="480" Width="1000" MinWidth="640" Background="#FFEFEFF4" WindowStyle="ThreeDBorderWindow">
     
     <Window.Resources>
         <Image x:Key="micIcon" Source="Resources/mic.png"/>
@@ -26,8 +26,9 @@
             <ColumnDefinition Width="25*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Content="Запись остановлена" x:Name="test" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
+        <Label x:Name="test" Content="Запись остановлена" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Label x:Name="phrase" Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30" FontStyle="Italic" Foreground="DimGray"/>
+        <Label x:Name="text" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="30"/>
         <Button x:Name="recordButton" PreviewMouseDown="StartRecording" PreviewMouseUp="StopRecording" Grid.Column="2" Grid.Row="2" Margin="16" Content="{StaticResource micIcon}" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" Height="{Binding ElementName=recordButton, Path=Width}" VerticalAlignment="Center" />
 
         <Rectangle x:Name="horizLine1" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"/>

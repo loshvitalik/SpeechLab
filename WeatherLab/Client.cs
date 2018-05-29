@@ -1,4 +1,6 @@
-﻿using NetMQ;
+﻿using System;
+using System.Text;
+using NetMQ;
 using NetMQ.Sockets;
 
 namespace WeatherLab
@@ -13,13 +15,32 @@ namespace WeatherLab
 			client.Connect(address);
 		}
 
-		public string Recognize(byte[] speech)
+		public Tuple<string, string> Recognize(byte[] phrase)
 		{
-			var messageToServer = new NetMQMessage();
-			messageToServer.Append(speech);
-			client.SendMultipartMessage(messageToServer);
+			var request = new NetMQMessage();
+			request.Append(phrase);
+			client.SendMultipartMessage(request);
 			var response = client.ReceiveMultipartMessage();
-			return response.ToString();
+			return ParseResponse(response);
+		}
+
+		private Tuple<string, string> ParseResponse(NetMQMessage response)
+		{
+			var header = response[0].ConvertToString(Encoding.UTF8);
+			if (header == "NoText")
+				return new Tuple<string, string>("", "Не удалось распознать Ваш голос :(");
+			var phrase = response[1].ConvertToString(Encoding.UTF8);
+			switch (header)
+			{
+				case "Text":
+					return new Tuple<string, string>(phrase, "Вы сказали: " + phrase + "?");
+				case "NoWeather":
+					return new Tuple<string, string>(phrase, "Не удалось найти погоду для этого города :(");
+				case "Weather":
+					return new Tuple<string, string>(phrase, response[2].ConvertToString(Encoding.UTF8));
+				default:
+					return new Tuple<string, string>(phrase, "Неизвестная операция :(");
+			}
 		}
 	}
 }
