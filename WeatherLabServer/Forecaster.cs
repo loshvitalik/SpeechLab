@@ -1,26 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace WeatherLabServer
 {
 	public class Forecaster
 	{
+		private readonly OpenWeatherAPI.OpenWeatherAPI openWeatherApi;
+		private readonly string citylist = Path.Combine(Environment.CurrentDirectory, "data\\citylist.txt");
 		public Dictionary<string, string> Cities;
-	    private readonly OpenWeatherAPI.OpenWeatherAPI openWeatherApi;
-        public Forecaster(string key)
-        {
-            openWeatherApi = new OpenWeatherAPI.OpenWeatherAPI(key);
-            Cities = new Dictionary<string, string>();
-			Cities.Add("екатеринбург", "Yekaterinburg,ru");
-			// Cities заполняем из файла
+
+		public Forecaster(string key)
+		{
+			openWeatherApi = new OpenWeatherAPI.OpenWeatherAPI(key);
+			Cities = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(citylist, Encoding.Default));
 		}
 
 		public string GetWeather(string city)
 		{
-			OpenWeatherAPI.Query query = openWeatherApi.query(Cities[city]);
+			var query = openWeatherApi.query(Cities[city]);
 			city = char.ToUpper(city[0]) + city.Substring(1);
-            var temp = query.Main.Temperature.CelsiusCurrent;
-            // получаем json погоды, вытаскиваем температуру и отдаем красивую строку
-            return "Температура в городе " + city + " сейчас составляет " + temp + " градусов";
+			var temp = query.Main.Temperature.CelsiusCurrent;
+			return "Температура в городе " + city + " сейчас составляет " + temp + " градусов";
 		}
 	}
 }

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using NetMQ;
 using NetMQ.Sockets;
+using Newtonsoft.Json;
 
 namespace WeatherLabServer
 {
@@ -11,13 +13,15 @@ namespace WeatherLabServer
 		private readonly Forecaster forecaster;
 		private readonly SpeechRecognizer recognizer;
 		private readonly RouterSocket server;
-		private readonly string[] stopWords = {"погода", "в", "город", "городе"}; // можно и из файла при создании
+		private readonly string stoplist = Path.Combine(Environment.CurrentDirectory, "data\\stoplist.txt");
+		private readonly string[] stopWords;
 
 		public Server()
 		{
 			server = new RouterSocket("@tcp://127.0.0.1:2228");
 			recognizer = new SpeechRecognizer();
 			forecaster = new Forecaster("1b933923de5a5582bcf7788f67709a15");
+			stopWords = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(stoplist, Encoding.Default));
 		}
 
 		public void Run()
@@ -60,6 +64,7 @@ namespace WeatherLabServer
 					city = w;
 					break;
 				}
+
 			if (city == "")
 				return CreateResponse(response, "NoWeather", phrase);
 			return CreateResponse(response, "Weather", phrase,
