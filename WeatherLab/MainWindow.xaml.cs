@@ -10,7 +10,8 @@ namespace WeatherLab
     {
 		private readonly Client client;
 	    private AudioRecorder recorder;
-        public MainWindow()
+
+	    public MainWindow()
         {
             InitializeComponent();
 	        client = new Client("tcp://127.0.0.1:2228");
@@ -28,8 +29,8 @@ namespace WeatherLab
 			test.Content = "Запись завершена";
 			recorder.WaveSource.StopRecording();
 			var response = client.Recognize(recorder.Stream.ToArray());
-		    phrase.Content = "\" " + response.Item1 + " \"";
-		    text.Content = response.Item2;
+		    phrase.Text = "\" " + response.Item1 + " \"";
+		    text.Text = response.Item2;
 	    }
 	}
 }

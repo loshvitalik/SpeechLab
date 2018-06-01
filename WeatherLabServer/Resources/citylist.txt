@@ -1,0 +1,1 @@
+{"екатеринбург":"Yekaterinburg,ru","екатеринбурге":"Yekaterinburg,ru","москва":"Moscow,ru","москве":"Moscow,ru"}

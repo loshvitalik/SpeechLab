@@ -8,6 +8,11 @@
     
     <Window.Resources>
         <Image x:Key="micIcon" Source="Resources/mic.png"/>
+        <Style TargetType="{x:Type ProgressBar}">
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="Foreground" Value="CornflowerBlue"/>
+            <Setter Property="Background" Value="#FFEFEFF4"/>
+        </Style>
         <Style TargetType="Rectangle">
             <Setter Property="Fill" Value="#FFA7A7AB"/>
         </Style>
@@ -27,10 +32,12 @@
         </Grid.ColumnDefinitions>
 
         <Label x:Name="test" Content="Запись остановлена" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <Label x:Name="phrase" Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30" FontStyle="Italic" Foreground="DimGray"/>
-        <Label x:Name="text" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="30"/>
-        <Button x:Name="recordButton" PreviewMouseDown="StartRecording" PreviewMouseUp="StopRecording" Grid.Column="2" Grid.Row="2" Margin="16" Content="{StaticResource micIcon}" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" Height="{Binding ElementName=recordButton, Path=Width}" VerticalAlignment="Center" />
+        <TextBlock x:Name="phrase" Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" TextAlignment="Center" FontSize="30" FontStyle="Italic" Foreground="DimGray" TextWrapping="WrapWithOverflow"/>
+        <TextBlock x:Name="text" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom" TextAlignment="Center" FontSize="30" TextWrapping="WrapWithOverflow"/>
 
+        <ProgressBar x:Name="levelMeter1" Value="0" Grid.Column="2" Grid.Row="2" Margin="5,5,0,0" Width="20" Orientation="Vertical" HorizontalAlignment="Left"/>
+        <ProgressBar x:Name="levelMeter2" Value="0" Grid.Column="2" Grid.Row="2" Margin="0,5,5,0" Width="20" Orientation="Vertical" HorizontalAlignment="Right"/>
+        <Image x:Name="recordButton" Source="Resources/mic.png" PreviewMouseDown="StartRecording" PreviewMouseUp="StopRecording" Grid.Column="2" Grid.Row="2" Margin="25"  Height="{Binding ElementName=recordButton, Path=Width}" VerticalAlignment="Center" />
         <Rectangle x:Name="horizLine1" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"/>
         <Rectangle x:Name="vertLine" Grid.Column="1" Grid.Row="2"/>
     </Grid>

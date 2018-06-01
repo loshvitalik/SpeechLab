@@ -13,13 +13,13 @@ namespace WeatherLabServer
 		private readonly Forecaster forecaster;
 		private readonly SpeechRecognizer recognizer;
 		private readonly RouterSocket server;
-		private readonly string stoplist = Path.Combine(Environment.CurrentDirectory, "data\\stoplist.txt");
+		private readonly string stoplist = Path.Combine(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString(), "Resources\\stoplist.txt");
 		private readonly string[] stopWords;
 
 		public Server()
 		{
-			if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, "data")))
-				Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, "data"));
+			if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, "Resources")))
+				Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, "Resources"));
 			if (!File.Exists(stoplist))
 				File.Create(stoplist).Close();
 			server = new RouterSocket("@tcp://127.0.0.1:2228");
