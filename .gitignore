@@ -25,7 +25,8 @@ bld/
 bin/*
 !bin/Debug/
 bin/Debug/*
-!bin/Debug/data/
+!bin/Debug/data/citylist.txt
+!bin/Debug/data/stoplist.txt
 
 # Visual Studio 2015 cache/options directory
 .vs/
