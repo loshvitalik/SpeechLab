@@ -69,7 +69,7 @@ namespace WeatherLabServer
 					city = w;
 					break;
 				}
-			for (var i = 0; i < words.Length - 2; i++)
+			for (var i = 0; i < words.Length - 1; i++)
 				if (forecaster.Cities.ContainsKey(words[i] + " " + words[i + 1]))
 				{
 					city = words[i] + " " + words[i + 1];
