@@ -15,6 +15,8 @@ namespace WeatherLabServer
 		public Forecaster(string key)
 		{
 			openWeatherApi = new OpenWeatherAPI.OpenWeatherAPI(key);
+			if (!File.Exists(citylist))
+				File.Create(citylist).Close();
 			Cities = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(citylist, Encoding.Default));
 		}
 

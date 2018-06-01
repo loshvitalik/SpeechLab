@@ -18,6 +18,10 @@ namespace WeatherLabServer
 
 		public Server()
 		{
+			if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, "data")))
+				Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, "data"));
+			if (!File.Exists(stoplist))
+				File.Create(stoplist).Close();
 			server = new RouterSocket("@tcp://127.0.0.1:2228");
 			recognizer = new SpeechRecognizer();
 			forecaster = new Forecaster("1b933923de5a5582bcf7788f67709a15");
