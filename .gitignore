@@ -18,14 +18,14 @@
 x64/
 x86/
 bld/
-[Bb]in/*
 [Oo]bj/
 [Ll]og/
 
 # Weather forecaster data
-![Bb]in/[Dd]ebug/
-[Bb]in/[Dd]ebug/*
-![Bb]in/[Dd]ebug/data/
+bin/*
+!bin/Debug/
+bin/Debug/*
+!bin/Debug/data/
 
 # Visual Studio 2015 cache/options directory
 .vs/
