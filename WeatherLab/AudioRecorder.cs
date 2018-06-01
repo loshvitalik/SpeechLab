@@ -39,8 +39,8 @@ namespace WeatherLab
 			Application.Current.Dispatcher.BeginInvoke(new Action(delegate
 			{
 				var w = (MainWindow) Application.Current.MainWindow;
-				w.levelMeter1.Value = peak / 50;
-				w.levelMeter2.Value = peak / 50;
+				w.levelMeter1.Value = peak / 70;
+				w.levelMeter2.Value = peak / 70;
 			}));
 		}
 

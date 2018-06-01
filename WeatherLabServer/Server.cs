@@ -62,19 +62,21 @@ namespace WeatherLabServer
 			if (!isWeather)
 				return CreateResponse(response, "Text", phrase);
 			var city = "";
-			words = words.Where(w => !stopWords.Contains(w)).ToArray();
+			words = words.Where(w => !stopWords.Contains(w)).Where(w => !weatherWords.Contains(w)).ToArray();
 			foreach (var w in words)
 				if (forecaster.Cities.ContainsKey(w))
 				{
 					city = w;
 					break;
 				}
-			for (var i = 0; i < words.Length - 1; i++)
-				if (forecaster.Cities.ContainsKey(words[i] + " " + words[i + 1]))
-				{
-					city = words[i] + " " + words[i + 1];
-					break;
-				}
+
+			if (city == "")
+				for (var i = 0; i < words.Length - 1; i++)
+					if (forecaster.Cities.ContainsKey(words[i] + " " + words[i + 1]))
+					{
+						city = words[i] + " " + words[i + 1];
+						break;
+					}
 
 			if (city == "")
 				return CreateResponse(response, "NoWeather", phrase);
