@@ -25,7 +25,8 @@ namespace WeatherLabServer
 			    "http://api.openweathermap.org/data/2.5/" + $"weather?appid={key}&q={Cities[city]}");
 		    var temp = (int)JObject.Parse(forecast)["main"]["temp"]-273;
 		    city = char.ToUpper(city[0]) + city.Substring(1);
-			return "Температура в городе " + city + " сейчас составляет " + temp + " градусов";
+			char sign = temp > 0 ? '+' : '-';
+			return "Температура в г. " + city + " сейчас составляет " + sign + temp + "°C";
 		}
 	}
 }

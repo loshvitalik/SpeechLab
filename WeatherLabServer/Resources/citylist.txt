@@ -1,1 +1,7 @@
-{"екатеринбург":"Yekaterinburg,ru","екатеринбурге":"Yekaterinburg,ru","москва":"Moscow,ru","москве":"Moscow,ru"}
+{"екатеринбург":"Yekaterinburg,ru","екатеринбурге":"Yekaterinburg,ru",
+"санкт-петербург":"Saint Petersburg,ru","санкт-петербурге":"Saint Petersburg,ru","питер":"Saint Petersburg,ru","питере":"Saint Petersburg,ru","петербурге":"Saint Petersburg,ru","петербург":"Saint Petersburg,ru",
+"москва":"Moscow,ru","москве":"Moscow,ru",
+"челябинск":"Chelyabinsk,ru","челябинске":"Chelyabinsk,ru",
+"белорецк":"Beloretsk,ru","белорецке":"Beloretsk,ru",
+"анапа":"Anapa,ru","анапе":"Anapa,ru",
+"заветы ильича":"Zavety Il’icha,ru","заветах ильича":"Zavety Il’icha,ru"}

@@ -29,7 +29,7 @@ namespace WeatherLab
 		{
 			var header = response[0].ConvertToString(Encoding.UTF8);
 			if (header == "NoText")
-				return new Tuple<string, string>("", "Не удалось распознать Ваш голос :(");
+				return new Tuple<string, string>("NoText", "Не удалось распознать Ваш голос :(");
 			var phrase = response[1].ConvertToString(Encoding.UTF8);
 			switch (header)
 			{

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using NetMQ;
 using NetMQ.Sockets;
@@ -15,6 +16,8 @@ namespace WeatherLabServer
 		private readonly RouterSocket server;
 		private readonly string stoplist = Path.Combine(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString(), "Resources\\stoplist.txt");
 		private readonly string[] stopWords;
+		private readonly string weatherlist = Path.Combine(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString(), "Resources\\weatherlist.txt");
+		private readonly string[] weatherWords;
 
 		public Server()
 		{
@@ -22,10 +25,13 @@ namespace WeatherLabServer
 				Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, "Resources"));
 			if (!File.Exists(stoplist))
 				File.Create(stoplist).Close();
+			if (!File.Exists(weatherlist))
+				File.Create(weatherlist).Close();
 			server = new RouterSocket("@tcp://127.0.0.1:2228");
 			recognizer = new SpeechRecognizer();
 			forecaster = new Forecaster("1b933923de5a5582bcf7788f67709a15");
 			stopWords = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(stoplist, Encoding.Default));
+			weatherWords = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(weatherlist, Encoding.Default));
 		}
 
 		public void Run()
@@ -33,11 +39,7 @@ namespace WeatherLabServer
 			while (true)
 			{
 				var request = server.ReceiveMultipartMessage();
-
-				//
-				Console.WriteLine("Received a message at " + DateTime.Now);
-				PrintFrames("Server receiving", request);
-				//
+				Console.WriteLine("Received a message from client at " + DateTime.Now);
 
 				var response = new NetMQMessage();
 				var clientAddress = request[0];
@@ -46,11 +48,8 @@ namespace WeatherLabServer
 				var phrase = recognizer.Recognize(request[1].ToByteArray());
 				response = ParsePhrase(response, phrase);
 				server.SendMultipartMessage(response);
-
-				//
-				Console.WriteLine("Sent a message at " + DateTime.Now);
-				Console.WriteLine();
-				//
+				Console.WriteLine("Sent a message with header: " + response[1].ConvertToString(Encoding.UTF8) + " at " +
+				                  DateTime.Now);
 			}
 		}
 
@@ -59,13 +58,21 @@ namespace WeatherLabServer
 			var words = phrase.ToLower().Split(' ');
 			if (phrase.Length == 0)
 				return CreateResponse(response, "NoText");
-			if (!words.Contains("погода"))
+			var isWeather = weatherWords.Any(w => words.Contains(w));
+			if (!isWeather)
 				return CreateResponse(response, "Text", phrase);
 			var city = "";
-			foreach (var w in words.Where(w => !stopWords.Contains(w)))
+			words = words.Where(w => !stopWords.Contains(w)).ToArray();
+			foreach (var w in words)
 				if (forecaster.Cities.ContainsKey(w))
 				{
 					city = w;
+					break;
+				}
+			for (var i = 0; i < words.Length - 2; i++)
+				if (forecaster.Cities.ContainsKey(words[i] + " " + words[i + 1]))
+				{
+					city = words[i] + " " + words[i + 1];
 					break;
 				}
 
@@ -80,12 +87,6 @@ namespace WeatherLabServer
 			foreach (var d in data)
 				message.Append(Encoding.UTF8.GetBytes(d));
 			return message;
-		}
-
-		private void PrintFrames(string operationType, NetMQMessage message) // Test
-		{
-			for (var i = 0; i < message.FrameCount; i++)
-				Console.WriteLine("{0} Socket : Frame[{1}]", operationType, i);
 		}
 	}
 }

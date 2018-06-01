@@ -138,5 +138,9 @@
   <ItemGroup>
     <Resource Include="Resources\mic.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mic_done.png" />
+    <Resource Include="Resources\mic_rec.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
