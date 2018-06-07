@@ -13,7 +13,6 @@ namespace WeatherLab
 		{
 			client = new DealerSocket();
 			client.Connect(address);
-		   
 		}
 
 		public Tuple<string, string> Recognize(byte[] phrase)
@@ -34,10 +33,11 @@ namespace WeatherLab
 			switch (header)
 			{
 				case "Text":
-					return new Tuple<string, string>(phrase, "Вы сказали: " + phrase + "?");
+					return new Tuple<string, string>(phrase, "Вы сказали: " + phrase + "? Мне нечего на это ответить :)");
 				case "NoWeather":
 					return new Tuple<string, string>(phrase, "Не удалось найти погоду для этого города :(");
 				case "Weather":
+				case "Answer":
 					return new Tuple<string, string>(phrase, response[2].ConvertToString(Encoding.UTF8));
 				default:
 					return new Tuple<string, string>(phrase, "Неизвестная операция :(");

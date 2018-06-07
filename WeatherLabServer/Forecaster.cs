@@ -16,6 +16,15 @@ namespace WeatherLabServer
 		public Forecaster(string key)
 		{
 		    this.key = key;
+			if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, "Resources")))
+				Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, "Resources"));
+			if (!File.Exists(citylist))
+			{
+				Console.WriteLine("Warning: City list file is empty. Creating new file with example city: Ekaterinburg");
+				File.Create(citylist).Close();
+				File.AppendAllText(citylist, @"{""екатеринбург"":1486209,""екатеринбурге"":1486209,""екб"":1486209}", Encoding.Default);
+			}
+
 			Cities = JsonConvert.DeserializeObject<Dictionary<string, int>>(File.ReadAllText(citylist, Encoding.Default));
 		}
 
