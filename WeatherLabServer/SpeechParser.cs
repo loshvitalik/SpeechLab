@@ -66,7 +66,7 @@ namespace WeatherLabServer
 			var isWeather = weatherWords.Any(w => words.Contains(w));
 			if (isWeather)
 			{
-				header = "Weather";
+				header = "Answer";
 				var city = "";
 				var wordsToLook = words.Where(w => !stopWords.Contains(w)).ToArray();
 				if (wordsToLook.Length == 0)
@@ -84,10 +84,7 @@ namespace WeatherLabServer
 							break;
 						}
 
-				if (city == "")
-					header = "NoWeather";
-				else
-					response.Append(forecaster.GetWeather(city));
+				response.Append(city == "" ? "Не удалось найти погоду для этого города :(" : forecaster.GetWeather(city));
 			}
 
 			return response.Length != 0 ? new[] {header, phrase, response.ToString()} : new[] {header, phrase};

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Threading;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace WeatherLab
@@ -23,10 +26,10 @@ namespace WeatherLab
 		{
 			recorder = new AudioRecorder();
 			recorder.WaveSource.StartRecording();
-			if (!wasResponded)
-				mic.Source = new BitmapImage(new Uri("Resources/mic_rec0.png", UriKind.Relative));
-			else
-				mic.Source = new BitmapImage(new Uri("Resources/mic_rec1.png", UriKind.Relative));
+			spoiler.Visibility = Visibility.Hidden;
+			mic.Source = wasResponded
+				? new BitmapImage(new Uri("Resources/mic_rec1.png", UriKind.Relative))
+				: new BitmapImage(new Uri("Resources/mic_rec0.png", UriKind.Relative));
 		}
 
 		private void StopRecording(object sender, MouseButtonEventArgs e)
@@ -41,6 +44,8 @@ namespace WeatherLab
 			if (recorder.Stream == null || recorder.Stream.Length < 50000)
 			{
 				wasResponded = false;
+				spoiler.Visibility = Visibility.Visible;
+				spoiler.Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));
 				mic.Source = new BitmapImage(new Uri("Resources/mic.png", UriKind.Relative));
 			}
 			else

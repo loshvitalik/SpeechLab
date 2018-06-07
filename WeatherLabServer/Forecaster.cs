@@ -41,7 +41,7 @@ namespace WeatherLabServer
 			if (clouds > 60) cloudness = "Пасмурно";
 			var builder = new StringBuilder();
 			builder.Append("Сейчас в " + char.ToUpper(city[0]) + city.Substring(1) + ":\n");
-			builder.Append("Температура: " + (temp > 0 ? '+' : '-') + temp + "°C\n");
+			builder.Append("Температура: " + (temp > 0 ? "+" : "") + temp + "°C\n");
 			builder.Append(cloudness + "\n");
 			builder.Append("Скорость ветра: " + wind + " м/с\n");
 			builder.Append("Влажность: " + humidity + "%\n");
