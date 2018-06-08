@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -56,6 +55,12 @@ namespace WeatherLab
 				text.Text = response.Item2;
 				mic.Source = new BitmapImage(new Uri("Resources/mic_done.png", UriKind.Relative));
 			}
+		}
+
+		private void ShowAboutWindow(object sender, MouseButtonEventArgs e)
+		{
+			new Alert("О программе \"Speech Lab\"",
+				"Speech Lab v. 2.0\n© 2018 loshvitalik, MrBlacktop").Show();
 		}
 	}
 }

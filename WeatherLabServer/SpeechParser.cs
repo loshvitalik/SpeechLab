@@ -5,8 +5,8 @@ namespace WeatherLabServer
 {
 	internal class SpeechParser
 	{
-		private readonly Forecaster forecaster;
 		private readonly string[] commands = {"как"};
+		private readonly Forecaster forecaster;
 		private readonly string[] greetings = {"привет", "приветствую", "прив", "здравствуйте", "здравствуй"};
 
 		private readonly string[] stopWords =

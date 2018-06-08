@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -10,12 +11,13 @@ namespace WeatherLabServer
 	public class Forecaster
 	{
 		private readonly string citylist = Path.Combine(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString(), "Resources\\citylist.txt");
+
+		private readonly string key;
 		public Dictionary<string, int> Cities;
-	    private readonly string key;
 
 		public Forecaster(string key)
 		{
-		    this.key = key;
+			this.key = key;
 			if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, "Resources")))
 				Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, "Resources"));
 			if (!File.Exists(citylist))
@@ -30,8 +32,7 @@ namespace WeatherLabServer
 
 		public string GetWeather(string city)
 		{
-		    var forecast = new System.Net.WebClient().DownloadString(
-			    "http://api.openweathermap.org/data/2.5/" + $"weather?appid={key}&id={Cities[city]}");
+			var forecast = new WebClient().DownloadString("http://api.openweathermap.org/data/2.5/" + $"weather?appid={key}&id={Cities[city]}");
 			var temp = (int) JObject.Parse(forecast)["main"]["temp"] - 273;
 			var humidity = (int) JObject.Parse(forecast)["main"]["humidity"];
 			var wind = (int) JObject.Parse(forecast)["wind"]["speed"];

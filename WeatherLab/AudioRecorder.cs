@@ -8,11 +8,11 @@ namespace WeatherLab
 {
 	internal class AudioRecorder
 	{
-		public MemoryStream Stream;
-		public WaveInEvent WaveSource;
 		private const int avgWidth = 5;
 		private readonly Queue<int> peaks;
 		private int peaksSum;
+		public MemoryStream Stream;
+		public WaveInEvent WaveSource;
 
 		public AudioRecorder()
 		{
@@ -37,7 +37,7 @@ namespace WeatherLab
 			for (var i = 0; i < e.BytesRecorded / 4; i++)
 			{
 				var sample = buffer.ShortBuffer[i];
-				if (sample < 0) sample = (short)-sample;
+				if (sample < 0) sample = (short) -sample;
 				if (sample > peak) peak = sample;
 			}
 
@@ -52,7 +52,7 @@ namespace WeatherLab
 				WaveSource = null;
 				Application.Current.Dispatcher.BeginInvoke(new Action(delegate
 				{
-					var w = (MainWindow)Application.Current.MainWindow;
+					var w = (MainWindow) Application.Current.MainWindow;
 					w.levelMeter.Value = 0;
 				}));
 			}
@@ -66,7 +66,7 @@ namespace WeatherLab
 				peaksSum -= peaks.Dequeue();
 			Application.Current.Dispatcher.BeginInvoke(new Action(delegate
 			{
-				var w = (MainWindow)Application.Current.MainWindow;
+				var w = (MainWindow) Application.Current.MainWindow;
 				w.levelMeter.Value = peaksSum / peaks.Count;
 			}));
 		}
