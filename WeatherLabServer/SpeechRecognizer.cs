@@ -1,4 +1,5 @@
-﻿using Google.Cloud.Speech.V1;
+﻿using System;
+using Google.Cloud.Speech.V1;
 
 namespace WeatherLabServer
 {
@@ -9,7 +10,21 @@ namespace WeatherLabServer
 
 		public SpeechRecognizer()
 		{
-			client = SpeechClient.Create();
+            try
+            {
+                client = SpeechClient.Create();
+			}
+            catch (Exception e)
+            {
+				Console.WriteLine("SpeechLab server could not start speech recognizer.");
+				Console.WriteLine("Perhaps the GOOGLE_APPLICATION_CREDENTIALS environment variable or the corresponding .json file is missing.\n" +
+                                  "Correct GOOGLE_APPLICATION_CREDENTIALS environment variable is required to run WeatherLab server.\n\n" +
+                                  "Full exception message:");
+                Console.WriteLine(e.Message);
+				Console.WriteLine("\nPress any key to stop the server...");
+                Console.ReadKey();
+                Environment.Exit(1);
+            }
 			config = new RecognitionConfig()
 			{
 				Encoding = RecognitionConfig.Types.AudioEncoding.Linear16,

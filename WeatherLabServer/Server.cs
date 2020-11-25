@@ -13,9 +13,11 @@ namespace WeatherLabServer
 
 		public Server()
 		{
+            Console.WriteLine("SpeechLab server is starting up...");
 			server = new RouterSocket("@tcp://127.0.0.1:2228");
 			recognizer = new SpeechRecognizer();
 			parser = new SpeechParser();
+            Console.WriteLine("SpeechLab server started.");
 		}
 
 		public void Run()

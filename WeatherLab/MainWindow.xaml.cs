@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -49,18 +50,20 @@ namespace WeatherLab
 			}
 			else
 			{
-				wasResponded = true;
 				var response = client.Recognize(recorder.Stream.ToArray());
+                if (response.Item1 != "NoText") wasResponded = true;
 				phrase.Text = response.Item1 == "NoText" ? "" : "\"" + response.Item1 + "\"";
 				text.Text = response.Item2;
-				mic.Source = new BitmapImage(new Uri("Resources/mic_done.png", UriKind.Relative));
+				mic.Source = wasResponded
+                    ? new BitmapImage(new Uri("Resources/mic_done.png", UriKind.Relative))
+                    : new BitmapImage(new Uri("Resources/mic.png", UriKind.Relative));
 			}
 		}
 
 		private void ShowAboutWindow(object sender, MouseButtonEventArgs e)
 		{
 			new Alert("О программе \"Speech Lab\"",
-				"Speech Lab v. 2.0\n© 2018 loshvitalik, MrBlacktop").Show();
+				"Speech Lab v. 3.0\n© 2020 loshvitalik, UrFU").Show();
 		}
 	}
 }

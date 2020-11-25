@@ -64,11 +64,12 @@ namespace WeatherLab
 			peaksSum += peak;
 			if (peaks.Count > avgWidth)
 				peaksSum -= peaks.Dequeue();
+			if (Application.Current == null) return;
 			Application.Current.Dispatcher.BeginInvoke(new Action(delegate
-			{
-				var w = (MainWindow) Application.Current.MainWindow;
-				w.levelMeter.Value = peaksSum / peaks.Count;
-			}));
+            {
+                var w = (MainWindow) Application.Current.MainWindow;
+                if (w != null) w.levelMeter.Value = peaksSum / peaks.Count;
+            }));
 		}
 	}
 }
