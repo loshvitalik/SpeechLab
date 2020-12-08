@@ -21,8 +21,10 @@ namespace WeatherLabServer
 			if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, "Resources")))
 				Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, "Resources"));
 			if (!File.Exists(citylist))
-			{
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
 				Console.WriteLine("Warning: City list file is empty. Creating new file with example city: Ekaterinburg");
+                Console.ForegroundColor = ConsoleColor.White;
 				File.Create(citylist).Close();
 				File.AppendAllText(citylist, @"{""екатеринбург"":1486209,""екатеринбурге"":1486209,""екб"":1486209}", Encoding.Default);
 			}
@@ -31,8 +33,28 @@ namespace WeatherLabServer
 		}
 
 		public string GetWeather(string city)
-		{
-			var forecast = new WebClient().DownloadString("http://api.openweathermap.org/data/2.5/" + $"weather?appid={key}&id={Cities[city]}");
+        {
+            var forecast = "";
+            Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("Acquiring weather data...");
+            try
+            {
+                forecast = new WebClient().DownloadString("http://api.openweathermap.org/data/2.5/" +
+                                                          $"weather?appid={key}&id={Cities[city]}");
+            }
+            catch (WebException e)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("SpeechLab could not get weather information.");
+                Console.WriteLine("The API key for OpenWeatherMap access is incorrect.\n\n" +
+                                  "Full exception message:");
+                Console.WriteLine(e.Message);
+                Console.WriteLine("\nPress any key to stop the server...");
+                Console.ReadKey();
+                Environment.Exit(3);
+			}
+            Console.WriteLine("Weather data acquired");
+			Console.ForegroundColor = ConsoleColor.White;
 			var temp = (int) JObject.Parse(forecast)["main"]["temp"] - 273;
 			var humidity = (int) JObject.Parse(forecast)["main"]["humidity"];
 			var wind = (int) JObject.Parse(forecast)["wind"]["speed"];

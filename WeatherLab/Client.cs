@@ -5,7 +5,7 @@ using NetMQ.Sockets;
 
 namespace WeatherLab
 {
-    internal class Client
+    public class Client
     {
         private readonly DealerSocket client;
 
@@ -21,11 +21,11 @@ namespace WeatherLab
             request.Append(phrase);
             client.SendMultipartMessage(request);
             var response = new NetMQMessage();
-            var msgReceived = client.TryReceiveMultipartMessage(TimeSpan.FromSeconds(3), ref response);
+            var msgReceived = client.TryReceiveMultipartMessage(TimeSpan.FromSeconds(5), ref response);
             return msgReceived ? ParseResponse(response) : new Tuple<string, string>("NoText", "Не удалось подключиться к серверу :(");
         }
 
-        private Tuple<string, string> ParseResponse(NetMQMessage response)
+        public Tuple<string, string> ParseResponse(NetMQMessage response)
         {
             var header = response[0].ConvertToString(Encoding.UTF8);
             if (header == "NoText")

@@ -45,18 +45,16 @@ namespace WeatherLab
 		}
 
 		private void WaveSource_RecordingStopped(object sender, StoppedEventArgs e)
-		{
-			if (WaveSource != null)
-			{
-				WaveSource.Dispose();
-				WaveSource = null;
-				Application.Current.Dispatcher.BeginInvoke(new Action(delegate
-				{
-					var w = (MainWindow) Application.Current.MainWindow;
-					w.levelMeter.Value = 0;
-				}));
-			}
-		}
+        {
+            if (WaveSource == null) return;
+            WaveSource.Dispose();
+            WaveSource = null;
+            Application.Current.Dispatcher.BeginInvoke(new Action(delegate
+            {
+                var w = (MainWindow) Application.Current.MainWindow;
+                w.levelMeter.Value = 0;
+            }));
+        }
 
 		private void CalculatePeak(int peak)
 		{

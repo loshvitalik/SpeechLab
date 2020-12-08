@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace WeatherLabServer
 {
-	internal class SpeechParser
+	public class SpeechParser
 	{
 		private readonly string[] commands = {"как"};
 		private readonly Forecaster forecaster;
@@ -29,15 +30,20 @@ namespace WeatherLabServer
 
 		public string[] ParsePhrase(string phrase)
 		{
-			if (phrase.Length == 0)
-				return new[] {"NoText"};
-			var header = "Text";
+            if (phrase.Length == 0)
+            {
+				Console.WriteLine("No text found");
+                return new[] {"NoText"};
+            }
+
+            var header = "Text";
 			var response = new StringBuilder();
 			var words = phrase.ToLower().Split(' ');
 
 			var greeting = greetings.FirstOrDefault(w => words.Contains(w));
 			if (greeting != null)
 			{
+				Console.WriteLine("Greeting found");
 				header = "Answer";
 				response.Append(char.ToUpper(greeting[0]) + greeting.Substring(1) + "! \n");
 			}
@@ -45,6 +51,7 @@ namespace WeatherLabServer
 			var hasCommand = commands.Any(w => words.Contains(w));
 			if (hasCommand)
 			{
+                Console.WriteLine("Command found");
 				header = "Answer";
 				for (var i = 0; i < words.Length; i++)
 				{
@@ -66,6 +73,7 @@ namespace WeatherLabServer
 			var isWeather = weatherWords.Any(w => words.Contains(w));
 			if (isWeather)
 			{
+                Console.WriteLine("Weather request found");
 				header = "Answer";
 				var city = "";
 				var wordsToLook = words.Where(w => !stopWords.Contains(w)).ToArray();
